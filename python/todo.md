@@ -1,6 +1,11 @@
 ---
-## [你真的会python嘛?](http://www.dongwm.com/archives/ni-zhen-de-hui-pythonma/)
+## 语言基础
+
+### [你真的会python嘛?](http://www.dongwm.com/archives/ni-zhen-de-hui-pythonma/)
 写的很在理，好好梳理一下 python 的基础知识。
+
+### Doc/reference/datamodel.rst
+class 的 `__init__, __new__, __del__` 等方法的作用是什么，会在什么时候被调用。
 
 ---
 ## tornado 源码阅读
@@ -18,6 +23,9 @@
         - global IOLoop instance 实现原理；
 
 * 对 WebSocket 的支持；
+
+* 异步调用的实现机制；
+	- tornado.gen
 
 ### REF
 * [Tornado源码分析之http服务器篇](http://kenby.iteye.com/blog/1159621)
