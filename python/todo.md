@@ -25,3 +25,7 @@
 ---
 ## 函数式编程
 * [Functional Programming with Python -- PyCon US 2013](http://pyvideo.org/video/1799/functional-programming-with-python)
+
+---
+## 调试方法
+* pdb
