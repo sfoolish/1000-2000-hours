@@ -10,14 +10,11 @@
 
 在什么时候需要使用OOP？
 
-
 #### 在什么时候使用类装饰器?
-
 
 [Python Closures and Decorators (Pt. 1)](http://blaag.haard.se/Python-Closures-and-Decorators--Pt--1/)
 [Python Closures and Decorators (Pt. 2)](http://blaag.haard.se/Python-Closures-and-Decorators--Pt--2/)
 [Python 的闭包和装饰器](http://doc.42qu.com/python/python-closures-and-decorators.html)
-
 
 decorator 与面向方面的编程（AOP aspect-oriented-program）
 
@@ -229,7 +226,15 @@ classmethod 与 staticmethod 的区别，适用场景是？
 asyncore，contextlib， functools， collections， heapq，itertools， SocketServer， weakref，operator(知道3个就算)这些你会几个？
 python的多态是什么?
 在什么场景可以尝试python的设计模式中的XX(能想到2个场景就算)?
-在什么时候可以使用Mixin？
+### 在什么时候可以使用Mixin？
+[Mixin](http://en.wikipedia.org/wiki/Mixin) In object-oriented programming languages, a mixin is a class which contains a combination of methods from other classes. How such combination is done depends on language, but it is not by inheritance. If a combination contains all methods of combined classes it is equivalent to multiple inheritance.
+
+[Using Mix-ins with Python](http://www.linuxjournal.com/node/4540/print)
+[Mix-in技术介绍](http://wiki.woodpecker.org.cn/moin/IntroMixin)
+[Mixin 扫盲班](http://blog.csdn.net/gzlaiyonghao/article/details/1656969)
+
+e.g. tornado.auth.py
+
 在什么时候可以使用python的闭包？
 你曾经用过yield嘛？生成器和迭代器的区别和应用场景是什么?
 在什么可以使用python的函数式编程?
