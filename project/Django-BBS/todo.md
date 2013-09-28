@@ -8,10 +8,15 @@
     - 要熟悉 Django 框架结构，及其使用；
     - Django 搭配数据库，数据对象模型设置。
 
+    django view 中如何区分 GET 跟 POST ?
+
 ### Nginx
 
     - uWSGI 对接 Django ；
     - 静态文件服务器，BootStrap 相关的 js, css 文件，网站相关图片直接走 nginx 。
+
+    [How to use Django with uWSGI](https://docs.djangoproject.com/en/1.5/howto/deployment/wsgi/uwsgi/)
+    [Setting up Django and your web server with uWSGI and nginx](https://uwsgi.readthedocs.org/en/latest/tutorials/Django_and_nginx.html)
 
 ### Redis
 
