@@ -95,11 +95,13 @@
     $ export DYLD_LIBRARY_PATH=/usr/local/mysql/lib:$DYLD_LIBRARY_PATH
 
 ## REF
+
 * [mysql downloads](http://dev.mysql.com/downloads/mysql/)
 * [Install MySQL on Mac OS X 10.6 and add StartupItem](http://www.tonyamoyal.com/2010/04/13/install-mysql-on-mac-os-x-10-6-and-add-startupitem/)
 * [Python mysqldb: Library not loaded: libmysqlclient.18.dylib](http://stackoverflow.com/questions/6383310/python-mysqldb-library-not-loaded-libmysqlclient-18-dylib)
 
 ---
+
 ## mysql ubuntu12.04 下源码编译
     $ sudo apt-get source mysql-server-core-5.5
     $ sudo apt-get install cmake
@@ -107,5 +109,23 @@
     $ cmake . -DCURSES_LIBRARY=/usr/lib/libncurses.so -DCURSES_INCLUDE_PATH=/usr/include
 
 ### REF
+
 * [解决Could NOT find Curses (missing: CURSES_LIBRARY CURSES_INCLUDE_PATH)](http://www.cnblogs.com/rooney/archive/2012/06/19/2554581.html)
 
+---
+
+## [MySQL修改root密码的各种方法整理](http://www.linuxidc.com/Linux/2008-02/11137.htm)
+
+方法3： 用UPDATE直接编辑user表
+
+　　mysql -u root
+　　mysql> use mysql;
+　　mysql> UPDATE user SET Password = PASSWORD('newpass') WHERE user = 'root';
+　　mysql> FLUSH PRIVILEGES;
+
+在丢失root密码的时候，可以这样
+
+　　mysqld_safe --skip-grant-tables&
+　　mysql -u root mysql
+　　mysql> UPDATE user SET password=PASSWORD("new password") WHERE user='root';
+　　mysql> FLUSH PRIVILEGES;
