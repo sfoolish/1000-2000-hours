@@ -1,0 +1,29 @@
+tsp:
+  build: .
+  ports:
+   - "5000:5000"
+  links:
+   - mongodb
+   - grafana
+   - yardstick
+
+mongodb:
+  image: tutum/mongodb
+  environment:
+    MONGODB_PASS: "tsppass"
+
+influxdb:
+  image: tutum/influxdb
+
+grafana:
+  image: grafana/grafana
+  ports:
+   - "3000:3000"
+  links:
+   - influxdb
+
+yardstick:
+  image: yardstick:sshd
+  links:
+   - influxdb
+
