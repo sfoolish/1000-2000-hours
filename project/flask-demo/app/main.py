@@ -1,71 +1,93 @@
-from flask import Flask
-from flask_restful import reqparse, abort, Api, Resource
+from flask import Flask, jsonify, url_for, redirect, request
+from flask_pymongo import PyMongo
+from flask_restful import Api, Resource
 
 app = Flask(__name__)
-api = Api(app)
+app.config["MONGO2_HOST"] = "mongodb"
+app.config["MONGO2_PORT"] = 27017
+app.config["MONGO2_DBNAME"] = "students_db"
+# app.config["MONGO2_DBPASSWORD"] = "tsppass"
 
-TODOS = {
-    'todo1': {'task': 'build an API'},
-    'todo2': {'task': '?????'},
-    'todo3': {'task': 'profit!'},
-}
-
-
-def abort_if_todo_doesnt_exist(todo_id):
-    if todo_id not in TODOS:
-        abort(404, message="Todo {} doesn't exist".format(todo_id))
-
-parser = reqparse.RequestParser()
-parser.add_argument('task')
+mongo = PyMongo(app, config_prefix='MONGO2')
+APP_URL = "http://192.168.99.100:5000"
 
 
-# Todo
-# shows a single todo item and lets you delete a todo item
-class Todo(Resource):
-    def get(self, todo_id):
-        abort_if_todo_doesnt_exist(todo_id)
-        return TODOS[todo_id]
+class Student(Resource):
+    def get(self, registration=None, department=None):
+        data = []
+        print "sssss#####\n"
+        if registration:
+            studnet_info = mongo.db.student.find_one({"registration": registration}, {"_id": 0})
+            if studnet_info:
+                return jsonify({"status": "ok", "data": studnet_info})
+            else:
+                return {"response": "no student found for {}".format(registration)}
 
-    def delete(self, todo_id):
-        abort_if_todo_doesnt_exist(todo_id)
-        del TODOS[todo_id]
-        return '', 204
+        elif department:
+            cursor = mongo.db.student.find({"department": department}, {"_id": 0}).limit(10)
+            for student in cursor:
+                student['url'] = APP_URL + url_for('students') + "/" + student.get('registration')
+                data.append(student)
 
-    def put(self, todo_id):
-        args = parser.parse_args()
-        task = {'task': args['task']}
-        TODOS[todo_id] = task
-        return task, 201
+            return jsonify({"department": department, "response": data})
 
+        else:
+            cursor = mongo.db.student.find({}, {"_id": 0, "update_time": 0}).limit(10)
 
-# TodoList
-# shows a list of all todos, and lets you POST to add new tasks
-class TodoList(Resource):
-    def get(self):
-        return TODOS
+            for student in cursor:
+                print student
+                student['url'] = APP_URL + url_for('students') + "/" + student.get('registration')
+                data.append(student)
+
+            return jsonify({"response": data})
 
     def post(self):
-        args = parser.parse_args()
-        todo_id = int(max(TODOS.keys()).lstrip('todo')) + 1
-        todo_id = 'todo%i' % todo_id
-        TODOS[todo_id] = {'task': args['task']}
-        return TODOS[todo_id], 201
+        data = request.get_json()
+        if not data:
+            data = {"response": "ERROR"}
+            return jsonify(data)
+        else:
+            registration = data.get('registration')
+            if registration:
+                if mongo.db.student.find_one({"registration": registration}):
+                    return {"response": "student already exists."}
+                else:
+                    mongo.db.student.insert(data)
+            else:
+                return {"response": "registration number missing"}
 
-##
-## Actually setup the Api resource routing here
-##
-api.add_resource(TodoList, '/todos')
-api.add_resource(Todo, '/todos/<todo_id>')
+        return redirect(url_for("students"))
+
+    def put(self, registration):
+        data = request.get_json()
+        mongo.db.student.update({'registration': registration}, {'$set': data})
+        return redirect(url_for("students"))
+
+    def delete(self, registration):
+        mongo.db.student.remove({'registration': registration})
+        return redirect(url_for("students"))
+
+
+class Index(Resource):
+    def get(self):
+        return redirect(url_for("students"))
+
+
+api = Api(app)
+api.add_resource(Index, "/", endpoint="index")
+api.add_resource(Student, "/api", endpoint="students")
+api.add_resource(Student, "/api/<string:registration>", endpoint="registration")
+api.add_resource(Student, "/api/department/<string:department>", endpoint="department")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
 
-
-# http://flask-restful-cn.readthedocs.org/en/0.3.4/quickstart.html
-
-# Tests
-# curl http://localhost:5000/todos
-# curl http://localhost:5000/todos/todo3
-# curl http://localhost:5000/todos/todo2 -X DELETE -v
-# curl http://localhost:5000/todos -d "task=something new" -X POST -v
-# curl http://localhost:5000/todos/todo3 -d "task=something different" -X PUT -v
+# http://salmanwahed.github.io/2015/05/01/flask-restful-mongodb-api/
+#
+# curl -v http://192.168.99.100:5000/api
+# curl -v -X POST -H "Content-Type: application/json" http://192.168.99.100:5000/api -d '{"name": "Example Name", "registration": "123433199", "department": "cse"}'
+# curl -v http://192.168.99.100:5000/api/123433199
+# curl -v -X PUT -H "Content-Type: application/json" http://192.168.99.100:5000/api/123433199 -d '{"website": "www.example.com"}'
+# curl -v http://192.168.99.100:5000/api/123433199
+# curl -v -X DELETE http://192.168.99.100:5000/api/123433199

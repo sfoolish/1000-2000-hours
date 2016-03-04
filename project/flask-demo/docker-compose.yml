@@ -6,11 +6,13 @@ tsp:
    - mongodb
    - grafana
    - yardstick
+  volumes:
+   - ./app:/var/www/app
 
 mongodb:
-  image: tutum/mongodb
-  environment:
-    MONGODB_PASS: "tsppass"
+  image: mongo:2.6.11
+  # environment:
+  #   MONGODB_PASS: "tsppass"
 
 influxdb:
   image: tutum/influxdb
