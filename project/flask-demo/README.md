@@ -1,7 +1,14 @@
-## build flask dev images
+# Use docker compose to run tsp
 
-docker build -t flask:sf .
+## Build tsp related images
 
-## Run flask
+```sh
+docker-compose build
+```
 
-docker run -v $(pwd):/var/www -P flask:sf
+## Run tsp
+
+```sh
+docker-compose up
+```
+
