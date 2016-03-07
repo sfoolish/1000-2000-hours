@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
 	 wget \
 	 vim
 
-COPY ssh /root/.ssh
+COPY yardstick/ssh /root/.ssh
 COPY app /var/www/app
 RUN pip install -r /var/www/app/requirements.txt
 
