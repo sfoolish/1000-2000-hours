@@ -2,6 +2,8 @@ from flask import Flask, jsonify, url_for, redirect, request
 from flask_pymongo import PyMongo
 from flask_restful import Api, Resource
 
+import ssh
+
 app = Flask(__name__)
 app.config["MONGO2_HOST"] = "mongodb"
 app.config["MONGO2_PORT"] = 27017
@@ -11,11 +13,21 @@ app.config["MONGO2_DBNAME"] = "students_db"
 mongo = PyMongo(app, config_prefix='MONGO2')
 APP_URL = "http://192.168.99.100:5000"
 
+def exec_yardstick_cmd():
+    user = "root"
+    ip = "yardstick"
+    key_filename = None
+    connection = ssh.SSH(user, ip, key_filename=key_filename) 
+    connection.wait()
+
+    # TODO add stderr check
+    exit_status, stdout, stderr = connection.execute(
+        "yardstick -h")
+    app.logger.info("yardstick output: %r" % stdout)
 
 class Student(Resource):
     def get(self, registration=None, department=None):
         data = []
-        print "sssss#####\n"
         if registration:
             studnet_info = mongo.db.student.find_one({"registration": registration}, {"_id": 0})
             if studnet_info:
@@ -42,6 +54,7 @@ class Student(Resource):
             return jsonify({"response": data})
 
     def post(self):
+        exec_yardstick_cmd()
         data = request.get_json()
         if not data:
             data = {"response": "ERROR"}
