@@ -10,7 +10,7 @@ tsp:
    - ./app:/var/www/app
 
 mongodb:
-  image: mongo:2.6.11
+  image: mongo:3.2.3
   # environment:
   #   MONGODB_PASS: "tsppass"
 
