@@ -1,7 +1,7 @@
 import threading
 import ssh
 
-from flask import Flask, jsonify, url_for, redirect, request
+from flask import Flask, jsonify, url_for, redirect, request, render_template
 from flask_pymongo import PyMongo
 from flask_restful import Api, Resource
 
@@ -79,6 +79,7 @@ class Student(Resource):
     def put(self, registration):
         global global_thread
         if global_thread != None:
+            # join with timeout 0 to check if thread task is finished
             global_thread.join(0)
             if global_thread.isAlive() == True:
                 app.logger.info("thread is still running...")
@@ -97,12 +98,16 @@ class Index(Resource):
     def get(self):
         return redirect(url_for("students"))
 
+class Hello(Resource):
+    def get(self):
+        return render_template("hello.html", name="abc")
 
 api = Api(app)
 api.add_resource(Index, "/", endpoint="index")
 api.add_resource(Student, "/api", endpoint="students")
 api.add_resource(Student, "/api/<string:registration>", endpoint="registration")
 api.add_resource(Student, "/api/department/<string:department>", endpoint="department")
+api.add_resource(Hello, "/hello", endpoint="hello")
 
 
 if __name__ == "__main__":
