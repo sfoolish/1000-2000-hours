@@ -1,14 +1,17 @@
+import threading
+import ssh
+
 from flask import Flask, jsonify, url_for, redirect, request
 from flask_pymongo import PyMongo
 from flask_restful import Api, Resource
-
-import ssh
 
 app = Flask(__name__)
 app.config["MONGO2_HOST"] = "mongodb"
 app.config["MONGO2_PORT"] = 27017
 app.config["MONGO2_DBNAME"] = "students_db"
 # app.config["MONGO2_DBPASSWORD"] = "tsppass"
+
+global_thread = None
 
 mongo = PyMongo(app, config_prefix='MONGO2')
 APP_URL = "http://192.168.99.100:5000"
@@ -22,7 +25,7 @@ def exec_yardstick_cmd():
 
     # TODO add stderr check
     exit_status, stdout, stderr = connection.execute(
-        "yardstick -h")
+        "sleep 20; yardstick -h")
     app.logger.info("yardstick output: %r" % stdout)
 
 class Student(Resource):
@@ -54,7 +57,9 @@ class Student(Resource):
             return jsonify({"response": data})
 
     def post(self):
-        exec_yardstick_cmd()
+        global global_thread
+        global_thread = threading.Thread(target=exec_yardstick_cmd, name='yardstick')
+        global_thread.start()
         data = request.get_json()
         if not data:
             data = {"response": "ERROR"}
@@ -72,6 +77,13 @@ class Student(Resource):
         return redirect(url_for("students"))
 
     def put(self, registration):
+        global global_thread
+        if global_thread != None:
+            global_thread.join(0)
+            if global_thread.isAlive() == True:
+                app.logger.info("thread is still running...")
+            else:
+                global_thread = None
         data = request.get_json()
         mongo.db.student.update({'registration': registration}, {'$set': data})
         return redirect(url_for("students"))
