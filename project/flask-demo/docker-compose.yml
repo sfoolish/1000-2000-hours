@@ -3,11 +3,24 @@ tsp:
   ports:
    - "5000:5000"
   links:
+   - redis
    - mongodb
    - grafana
    - yardstick
   volumes:
    - ./app:/var/www/app
+
+executor:
+  build: ./executor
+  links:
+   - redis
+  volumes:
+   - ./app:/var/www/app
+  environment:
+    C_FORCE_ROOT: "true"
+
+redis:
+  image: redis:3.0.7
 
 mongodb:
   image: mongo:3.2.3
