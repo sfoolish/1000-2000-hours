@@ -6,7 +6,6 @@ tsp:
    - redis
    - mongodb
    - grafana
-   - yardstick
   volumes:
    - ./app:/var/www/app
 
@@ -14,6 +13,7 @@ executor:
   build: ./executor
   links:
    - redis
+   - yardstick
   volumes:
    - ./app:/var/www/app
   environment:

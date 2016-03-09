@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
 	 wget \
 	 vim
 
+COPY ./ssh /var/www/app/.ssh
 COPY ./ /var/www/app
 RUN pip install -r /var/www/app/requirements.txt
 
