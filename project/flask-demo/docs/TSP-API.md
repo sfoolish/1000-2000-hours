@@ -2,11 +2,11 @@
 
 ### API 版本 
 
-GET    `/version`                                                 GET API version
+GET `/version` Get API version
 
 ### projects 增/删/改/查
 
-GET    `/projects`                                                List test projects
+GET `/projects` List test projects
 ```js
 {
     "projects": [
@@ -16,30 +16,30 @@ GET    `/projects`                                                List test proj
 }
 ```
 
-POST   `/projects`                                               Create a test project
+POST `/projects` Create a test project
 ```js
 {
     "project": { project info details }
 }
 ```
 
-GET    `/projects/detail`                                        List details for all test projects (optional)
+GET `/projects/detail` List details for all test projects (optional)
 
-GET    `/projects/{project_name e.g. yardstick}`                 Show details for a test project
+GET `/projects/{project_name e.g. yardstick}` Show details for a test project
 ```js
 {
     "project": { project info details }
 }
 ```
 
-PUT    `/projects/{project_name e.g. yardstick}`                 Update the editable attributes of a test project
+PUT `/projects/{project_name e.g. yardstick}` Update the editable attributes of a test project
 ```js
 {
     "project": { "description": "new description" }
 }
 ```
 
-DELETE `/projects/{project_name e.g. yardstick}`                 Deletes a test project
+DELETE `/projects/{project_name e.g. yardstick}` Deletes a test project
 
 **project info details**
 ```js
@@ -53,7 +53,7 @@ DELETE `/projects/{project_name e.g. yardstick}`                 Deletes a test 
 
 ### test case 增/删/改/查/执行
 
-GET    `/projects/yardstick/cases`                               List test cases
+GET `/projects/yardstick/cases` List test cases
 ```js
 {
     "cases": [
@@ -62,48 +62,48 @@ GET    `/projects/yardstick/cases`                               List test cases
     ]
 }
 ```
-POST   `/projects/yardstick/cases`                               Create a test case
+POST `/projects/yardstick/cases` Create a test case
 ```js
 {
     "case": { case info details }
 }
 ```
 
-GET    `/projects/yardstick/cases/detail`                        List details for all test cases (optional)
+GET `/projects/yardstick/cases/detail` List details for all test cases (optional)
 
-GET    `/projects/yardstick/cases/{case_name or case_id}`        Show details for a test case
+GET `/projects/yardstick/cases/{case_name or case_id}` Show details for a test case
 ```js
 {
     "case": { case info details }
 }
 ```
 
-PUT    `/projects/yardstick/cases/{case_name or case_id}`        Update the editable attributes of a test case
+PUT `/projects/yardstick/cases/{case_name or case_id}` Update the editable attributes of a test case
 ```js
 {
     "case": { "description": "new description" }
 }
 ```
 
-DELETE `/projects/yardstick/cases/{case_name or case_id}`        Deletes a test case
+DELETE `/projects/yardstick/cases/{case_name or case_id}` Deletes a test case
 
 ** 多个用例同时执行的时候怎么办？ 每一次执行都有一个 id ，然后可以 id 查状态？ **
 
-POST   `/projects/yardstick/cases/{case_name or case_id}/action` execute a test case
+POST `/projects/yardstick/cases/{case_name or case_id}/action` execute a test case
 ```js
 {
     "execute": null
 }
 ```
 
-POST   `/projects/yardstick/cases/{case_name or case_id}/action` get execute status of a test case
+POST `/projects/yardstick/cases/{case_name or case_id}/action` get execute status of a test case
 ```js
 {
     "status": null
 }
 ```
 
-POST   `/projects/yardstick/cases/action`                        execute several test cases(run as test suite)
+POST `/projects/yardstick/cases/action` execute several test cases(run as test suite)
 ```js
 {
     "execute": {
@@ -113,7 +113,7 @@ POST   `/projects/yardstick/cases/action`                        execute several
 }
 ```
 
-POST   `/projects/yardstick/cases/action`                        get execute status of several test cases
+POST `/projects/yardstick/cases/action` get execute status of several test cases
 ```js
 {
     "status": null
@@ -133,7 +133,7 @@ POST   `/projects/yardstick/cases/action`                        get execute sta
 ```
 ### NFVI 环境 增/删/改/查
 
-GET    `/environments`                                           List cloud environments
+GET `/environments` List cloud environments
 ```js
 {
     "environments": [
@@ -143,30 +143,30 @@ GET    `/environments`                                           List cloud envi
 }
 ```
 
-POST   `/environments`                                           Create cloud environment
+POST `/environments` Create cloud environment
 ```js
 {
     "environment": { environment info details }
 }
 ```
 
-GET    `/environments/detail`                                    List details for all cloud environments (optional)
+GET `/environments/detail` List details for all cloud environments (optional)
 
-GET    `/environments/{environment_id}`                          Show details for a cloud environment
+GET `/environments/{environment_id}` Show details for a cloud environment
 ```js
 {
     "environment": { environment info details }
 }
 ```
 
-PUT    `/environments/{environment_id}`                          Update the editable attributes of a cloud environment
+PUT `/environments/{environment_id}` Update the editable attributes of a cloud environment
 ```
 {
     "environment": { "description": "new description" }
 }
 ```
 
-DELETE `/environments/{environment_id}`                          Deletes a cloud environment
+DELETE `/environments/{environment_id}` Deletes a cloud environment
 
 **environment info details**
 ```js
