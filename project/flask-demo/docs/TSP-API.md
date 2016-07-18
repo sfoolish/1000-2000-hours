@@ -23,6 +23,10 @@ POST `/projects` Create a test project
 }
 ```
 
+Normal response codes202
+Error response codescomputeFault (400, 500, ...), serviceUnavailable (503), badRequest (400), unauthorized (401), forbidden (403), badMethod (405), itemNotFound (404)
+
+
 GET `/projects/detail` List details for all test projects (optional)
 
 GET `/projects/{project_name e.g. yardstick}` Show details for a test project
